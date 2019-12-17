@@ -1,0 +1,49 @@
+---
+# tasks file for /etc/ansible/roles/apache
+ - name: install apache
+   yum:
+     name: httpd 
+     state: present
+ - name: service
+   service:
+      name: httpd
+      state: started
+      enabled: yes  
+ - name: copy file to projcet
+   copy:
+    src: files/index.html
+    dest: /var/www/html/index.html
+ - name: copy file to project   
+   copy: 
+    src: files/virt.conf
+    dest: /etc/httpd/conf.d/virt.conf
+ - name: copy 
+   copy:
+     src: files/elinuxbook.crt 
+     dest: /etc/pki/tls/certs/elinuxbook.crt
+ - name: copy
+   copy:
+     src: files/elinuxbook.key
+     dest: /etc/pki/tls/private/elinuxbook.key
+ - name: copy
+   copy:
+     src: files/elinuxbook.csr 
+     dest: /etc/pki/tls/private/elinuxbook.csr
+ - name: line in file
+   lineinfile:
+     path: /etc/httpd/conf.d/ssl.conf
+     regexp: '^SSLCertificateFile'
+     line: SSLCertificateFile /etc/pki/tls/certs/elinuxbook.crt
+ - name: line in file
+   lineinfile:
+      path: /etc/httpd/conf.d/ssl.conf
+      regexp: '^SSLCertificateKeyFile'
+      line: SSLCertificateKeyFile /etc/pki/tls/private/elinuxbook.key
+   notify:
+   - restart apache 
+ - name: mod_ssl
+   yum: name=mod_ssl state=latest 
+
+
+  
+  
