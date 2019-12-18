@@ -1,5 +1,5 @@
 # SED-challenge
-# aws-cli
+# prerequisites
 * pip install aws-cli 
 * aws configure & enter keys 
 * Execute the ec2-provision playbook - ansible-playbook instance.yml
