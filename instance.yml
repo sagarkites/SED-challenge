@@ -12,10 +12,4 @@
       count: 1
       vpc_subnet_id: subnet-07ba5a4a
       assign_public_ip: yes
-   - name: adding to hosts
-     blockinfile:
-       path: /etc/ansible/hosts
-       block: |
-        [ec2]
-        {{ ansible_all_ipv4_addresses }}
        
