@@ -3,8 +3,6 @@
    gather_facts: no
    remote_user: ec2-user
    become: yes
-   vars:
-     - dns: ec2-54-86-251-106.compute-1.amazonaws.com
    tasks:
    roles:
    - apache
