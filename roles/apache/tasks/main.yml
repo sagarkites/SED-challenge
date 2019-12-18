@@ -16,20 +16,8 @@
     dest: /var/www/html/index.html
  - name: copy file to project   
    copy: 
+    src: files/virt.conf
     dest: /etc/httpd/conf.d/virt.conf
-    content: |
-      <VirtualHost *:80>
-        ServerName {{dns}}
-        Redirect permanent /  https://{{dns}}
-        DocumentRoot /var/www/html
-        ErrorLog /var/log/httpd/error.log
-        CustomLog /var/log/httpd/custom.log combined
-      </VirtualHost>
-
-      <VirtualHost _default_:443>
-        ServerName {{dns}}
-        Documentroot /var/www/html
-      </VirtualHost>
  - name: ssl
    command: openssl genrsa -out elinuxbook.key 2048
  - name: ssl
