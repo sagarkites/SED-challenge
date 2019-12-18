@@ -1,2 +1,2 @@
 ---
-# vars file for /etc/ansible/roles/apache
+dns: ec2-54-86-251-106.compute-1.amazonaws.com

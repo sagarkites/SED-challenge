@@ -1,5 +1,6 @@
 ---
 # tasks file for /etc/ansible/roles/apache
+
  - name: install apache
    yum:
      name: httpd 
@@ -15,20 +16,34 @@
     dest: /var/www/html/index.html
  - name: copy file to project   
    copy: 
-    src: files/virt.conf
     dest: /etc/httpd/conf.d/virt.conf
- - name: copy 
-   copy:
-     src: files/elinuxbook.crt 
-     dest: /etc/pki/tls/certs/elinuxbook.crt
- - name: copy
-   copy:
-     src: files/elinuxbook.key
-     dest: /etc/pki/tls/private/elinuxbook.key
- - name: copy
-   copy:
-     src: files/elinuxbook.csr 
-     dest: /etc/pki/tls/private/elinuxbook.csr
+    content: |
+      <VirtualHost *:80>
+        ServerName {{dns}}
+        Redirect permanent /  https://{{dns}}
+        DocumentRoot /var/www/html
+        ErrorLog /var/log/httpd/error.log
+        CustomLog /var/log/httpd/custom.log combined
+      </VirtualHost>
+
+      <VirtualHost _default_:443>
+        ServerName {{dns}}
+        Documentroot /var/www/html
+      </VirtualHost>
+ - name: ssl
+   command: openssl genrsa -out elinuxbook.key 2048
+ - name: ssl
+   command: openssl req -newkey rsa:2048 -nodes -keyout elinuxbook.key -out elinuxbook.csr -subj "/C=US/ST=New York/L=Brooklyn/O=Example Brooklyn Company/CN={{dns}}"
+ - name: ssl
+   command: openssl x509 -req -days 1095 -in elinuxbook.csr -signkey elinuxbook.key -out elinuxbook.crt
+ - name:
+   shell: cp elinuxbook.crt /etc/pki/tls/certs/
+ - name: 
+   shell: cp elinuxbook.key /etc/pki/tls/private/
+ - name:
+   shell: cp elinuxbook.csr /etc/pki/tls/private/
+ - name: mod_ssl
+   yum: name=mod_ssl state=latest
  - name: line in file
    lineinfile:
      path: /etc/httpd/conf.d/ssl.conf
@@ -41,9 +56,5 @@
       line: SSLCertificateKeyFile /etc/pki/tls/private/elinuxbook.key
    notify:
    - restart apache 
- - name: mod_ssl
-   yum: name=mod_ssl state=latest 
 
 
-  
-  
