@@ -21,7 +21,7 @@
  - name: ssl
    command: openssl genrsa -out elinuxbook.key 2048
  - name: ssl
-   command: openssl req -newkey rsa:2048 -nodes -keyout elinuxbook.key -out elinuxbook.csr -subj "/C=US/ST=New York/L=Brooklyn/O=Example Brooklyn Company/CN={{dns}}"
+   command: openssl req -newkey rsa:2048 -nodes -keyout elinuxbook.key -out elinuxbook.csr -subj "/C=US/ST=New York/L=Brooklyn/O=Example Brooklyn Company/CN=ec2-54-86-251-106.compute-1.amazonaws.com"
  - name: ssl
    command: openssl x509 -req -days 1095 -in elinuxbook.csr -signkey elinuxbook.key -out elinuxbook.crt
  - name:
